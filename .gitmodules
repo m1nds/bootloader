@@ -1,5 +1,5 @@
-[submodule "user/busybox"]
-	path = user/busybox
+[submodule "busybox"]
+	path = busybox
 	url = https://git.busybox.net/busybox
 [submodule "linux"]
 	path = linux
