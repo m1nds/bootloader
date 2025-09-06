@@ -1,0 +1,6 @@
+[submodule "user/busybox"]
+	path = user/busybox
+	url = https://git.busybox.net/busybox
+[submodule "linux"]
+	path = linux
+	url = https://github.com/torvalds/linux.git
