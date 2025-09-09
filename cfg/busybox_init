@@ -1,0 +1,26 @@
+#!/bin/sh
+/bin/busybox --install -s /bin
+
+mount -t proc none /proc
+mount -t sysfs none /sys
+mkdir /tmp
+mount -a
+cat <<!
+
+
+.88b  d88. db    db         d8888b. d888888b db   dD  .d8b.  d8888b.  .d88b.   .d88b.  d888888b 
+88'YbdP\`88 \`8b  d8'         88  \`8D   \`88'   88 ,8P' d8' \`8b 88  \`8D .8P  Y8. .8P  Y8. \`~~88~~' 
+88  88  88  \`8bd8'          88oodD'    88    88,8P   88ooo88 88oooY' 88    88 88    88    88    
+88  88  88    88            88~~~      88    88\`8b   88~~~88 88~~~b. 88    88 88    88    88    
+88  88  88    88            88        .88.   88 \`88. 88   88 88   8D \`8b  d8' \`8b  d8'    88    
+YP  YP  YP    YP    C88888D 88      Y888888P YP   YD YP   YP Y8888P'  \`Y88P'   \`Y88P'     YP    
+
+
+!
+
+echo "Every night, be better than in the morning"
+echo "If you went to this step in less than 5 hours, with
+interactive bootloader and utilities, you beat me"
+
+exec /bin/sh
+
