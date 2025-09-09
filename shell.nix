@@ -1,18 +1,14 @@
 with import <nixpkgs> {};
 
-clangStdenv.mkDerivation {
-  name = "clang-nix-shell";
+pkgs.mkShell {
+  name = "bootloader-shell";
   buildInputs = [
-    pkgs.clang_18
-    pkgs.llvm_18
-    pkgs.lld_18
     pkgs.ninja
     pkgs.cmake
     pkgs.qemu
-    pkgs.glibc_multi
-    pkgs.mtools
-    pkgs.grub2
-    pkgs.libisoburn
+    pkgs.pkgsCross.aarch64-multiplatform.buildPackages.binutils
+    pkgs.pkgsCross.aarch64-multiplatform.buildPackages.gdb
+    pkgs.pkgsCross.aarch64-multiplatform.buildPackages.gcc
   ];
 
   shellHook = ''

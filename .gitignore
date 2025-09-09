@@ -3,3 +3,5 @@ Image
 initramfs.cpio.gz
 result
 initramfs
+pflash.bin
+bootloader.img
