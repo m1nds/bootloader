@@ -2,3 +2,4 @@ build
 Image
 initramfs.cpio.gz
 result
+initramfs
