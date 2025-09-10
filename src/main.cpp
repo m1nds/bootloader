@@ -1,21 +1,7 @@
 #include <serial.hpp>
 #include <stddef.h>
 
-void* strcpy(char *dst, const char *src) {
-    size_t i = 0;
-    while (src[i]) {
-        dst[i] = src[i];
-        i++;
-    }
-    return dst;
-}
-
 extern "C" void kmain() {
-    Serial::puts("pikaboot> ");
-
-    while (true) {
-        Serial::puts("pikaboot> ");
-        Serial::putchar(Serial::getchar());
-        Serial::putchar('\n');
-    }
+    Serial::puts("bootloader - v0.1\n");
+    Serial::kprintf("Printing deadbeef: %x\n", 0xdeadbeef);
 }

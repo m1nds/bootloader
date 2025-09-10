@@ -22,6 +22,6 @@ target_link_options(bootloader PRIVATE
 )
 
 target_compile_options(bootloader PRIVATE
-    $<$<COMPILE_LANGUAGE:C>:-Wall; -Wextra; -Werror; -ffreestanding; -fno-stack-protector; -fno-zero-initialized-in-bss; -O0; -g>
+    $<$<COMPILE_LANGUAGE:CXX>:-Wall; -Wextra; -Werror; -ffreestanding; -fno-stack-protector; -fno-zero-initialized-in-bss; -O1; -g>
     $<$<COMPILE_LANGUAGE:ASM>:>
 )
