@@ -1,7 +1,7 @@
 #include <boot.hpp>
 #include <serial.hpp>
 
-typedef void (*boot_func)(void*);
+typedef void (*boot_func)(void*, uint64_t, uint64_t, uint64_t);
 
 Kernel::Kernel(void* kernel_addr, void* device_tree_addr) {
     this->kh = reinterpret_cast<KernelHeader*>(kernel_addr);
@@ -22,5 +22,7 @@ void Kernel::boot() const {
     Serial::kprintf("   reserved5 = %x\n", this->kh->reserved5);
 
     Serial::puts("=== Jumping to kernel code... ===\n");
-    reinterpret_cast<boot_func>(this->kh)(this->dt);
+
+    // kernel(&device_tree: x0, 0: x1, 0: x2, 0: x3);
+    reinterpret_cast<boot_func>(this->kh)(this->dt, 0, 0, 0);
 }
