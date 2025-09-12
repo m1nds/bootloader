@@ -23,6 +23,44 @@ char Serial::getchar() {
     return Serial::mmio_read(UART0_DR);
 }
 
+int Serial::get_command_line(char *buf, int maxlen) {
+    int i = 0;
+    while (true) {
+
+        if (i >= maxlen) {
+            break;
+        }
+
+        char c = Serial::getchar();
+        if (c != '\n' && c != '\r' &&  (c < 0x20 || c > 0x7f)) {
+            continue;
+        }
+
+        switch (c) {
+            case '\r':
+            case '\n':
+                Serial::putchar('\n');
+                buf[i] = '\0';
+                return i;
+            case '\b':
+            case '\x7f':
+                if (i > 0) {
+                    Serial::putchar('\b');
+                    Serial::putchar(' ');
+                    Serial::putchar('\b');
+                    i--;
+                }
+                continue;
+            default:
+                buf[i++] = c;
+                Serial::putchar(c);
+                break;
+        }
+    }
+    return -1;
+}
+
+
 void Serial::putchar(char c) {
     while (Serial::mmio_read(UART0_FR) & (1 << 5));
     Serial::mmio_write(UART0_DR, c);

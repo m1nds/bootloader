@@ -26,6 +26,18 @@ char *strcpy(char* dest, const char* src) {
     return dest;
 }
 
+int strcmp(const char* one, const char* two) {
+    size_t i = 0;
+
+    while (one[i] && two[i]) {
+        if (one[i] != two[i]) {
+            return one[i] - two[i];
+        }
+        i++;
+    }
+    return one[i] - two[i];
+}
+
 void* memmove(void* dstptr, const void* srcptr, size_t size) {
     unsigned char* dst = (unsigned char*) dstptr;
     const unsigned char* src = (const unsigned char*) srcptr;

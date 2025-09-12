@@ -7,6 +7,7 @@
 class Serial {
     public:
         static char getchar(void);
+        static int get_command_line(char *buf, int maxlen);
         static void putchar(char c);
         static void puts(const char* s);
         static void kprintf(const char* fmt, ...);
