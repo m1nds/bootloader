@@ -9,7 +9,7 @@ Kernel::Kernel(void* kernel_addr, void* device_tree_addr) {
 }
 
 void Kernel::boot() const {
-    Serial::kprintf("=== Kernel Header found at %X ===\n", (uint64_t) this);
+    Serial::kprintf("=== Kernel Header found at %X ===\n", (uint64_t) this->kh);
     Serial::kprintf("   code0 = %x\n", this->kh->code0);
     Serial::kprintf("   code1 = %x\n", this->kh->code1);
     Serial::kprintf("   text_offset = %X\n", this->kh->text_offset);
