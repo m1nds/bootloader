@@ -10,10 +10,14 @@ target_sources(bootloader PUBLIC
     entry.S
     main.cpp
     serial/serial.cpp
+    boot/boot.cpp
+    utils/string.cpp
 )
 
 target_include_directories(bootloader PRIVATE
+    utils/includes
     serial/includes
+    boot/includes
 )
 
 target_link_options(bootloader PRIVATE

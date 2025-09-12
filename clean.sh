@@ -2,4 +2,4 @@
 set -e
 
 echo "Cleaning repository..."
-rm -rf result Image initramfs.cpio.gz initramfs build pflash.bin
+rm -rf result Image initramfs.cpio.gz initramfs build pflash.bin bootloader.img
