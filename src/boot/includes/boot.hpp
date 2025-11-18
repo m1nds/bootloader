@@ -3,6 +3,14 @@
 
 #include <stdint.h>
 
+#ifndef IMAGE_SIZE
+#error IMAGE_SIZE: Need to define the Kernel Image size!
+#endif
+
+#ifndef IMAGE_CRC32
+#error IMAGE_CRC32: Need to define the Kernel Image CRC32 checksum!
+#endif
+
 struct KernelHeader {
     uint32_t code0;
     uint32_t code1;

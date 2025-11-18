@@ -12,6 +12,7 @@ target_sources(bootloader PUBLIC
     serial/serial.cpp
     boot/boot.cpp
     utils/string.cpp
+    utils/crc.cpp
 )
 
 target_include_directories(bootloader PRIVATE
