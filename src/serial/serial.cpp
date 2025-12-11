@@ -8,8 +8,8 @@ unsigned char Serial::stack[256] = { 0 };
 size_t Serial::stack_idx = 0;
 
 char Serial::getchar() {
-    while (MMIO::mmio_read(UART0_FR) & (1 << 4));
-    return MMIO::mmio_read(UART0_DR);
+    while (MMIO::mmio_read(PL011_BASE + UART0_FR) & (1 << 4));
+    return MMIO::mmio_read(PL011_BASE + UART0_DR);
 }
 
 int Serial::get_command_line(char *buf, int maxlen) {
@@ -52,7 +52,7 @@ int Serial::get_command_line(char *buf, int maxlen) {
 
 void Serial::putchar(char c) {
     while (MMIO::mmio_read(UART0_FR) & (1 << 5));
-    MMIO::mmio_write(UART0_DR, c);
+    MMIO::mmio_write(PL011_BASE + UART0_DR, c);
 }
 
 void Serial::puts(const char* s) {

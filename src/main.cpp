@@ -1,6 +1,7 @@
 #include <serial.hpp>
 #include <boot.hpp>
 #include <string.hpp>
+#include <dtb.hpp>
 
 #include <stddef.h>
 
@@ -17,6 +18,9 @@ void help() {
 }
 
 extern "C" void kmain(void* device_tree) {
+    DTB* dtb = reinterpret_cast<DTB*>(device_tree);
+    dtb->dump_header();
+
     void* kernel_image_addr = reinterpret_cast<void*>((uint64_t) &TEXT_START + PFLASH_BIN_OFFSET);
 
     Serial::puts("my_pikaboot - by m1nds\n\n");

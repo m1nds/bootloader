@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-constexpr uint32_t MMIO_BASE = 0x09000000;
+constexpr uint32_t PL011_BASE = 0x09000000;
 
 class MMIO {
     public:

@@ -14,6 +14,7 @@ target_sources(bootloader PUBLIC
     utils/string.cpp
     utils/crc.cpp
     utils/mmio.cpp
+    utils/dtb.cpp
 )
 
 target_include_directories(bootloader PRIVATE

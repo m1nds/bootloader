@@ -5,3 +5,4 @@ result
 initramfs
 pflash.bin
 bootloader.img
+qemu.dtb
