@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
+constexpr uint32_t UART0_DR = 0x0;
+constexpr uint32_t UART0_FR = 0x18;
+
 class Serial {
     public:
         static char getchar(void);

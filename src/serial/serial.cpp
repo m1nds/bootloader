@@ -1,26 +1,15 @@
 #include <serial.hpp>
+#include <mmio.hpp>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
 
-uint32_t MMIO_BASE = 0x09000000;
-uint32_t UART0_DR = 0x0;
-uint32_t UART0_FR = 0x18;
-
 unsigned char Serial::stack[256] = { 0 };
 size_t Serial::stack_idx = 0;
 
-void Serial::mmio_write(uint32_t reg, uint32_t data) {
-    *(reinterpret_cast<volatile uint32_t*>(MMIO_BASE + reg)) = data;
-}
-
-uint32_t Serial::mmio_read(uint32_t reg) {
-    return *(reinterpret_cast<volatile uint32_t*>(MMIO_BASE + reg));
-}
-
 char Serial::getchar() {
-    while (Serial::mmio_read(UART0_FR) & (1 << 4));
-    return Serial::mmio_read(UART0_DR);
+    while (MMIO::mmio_read(UART0_FR) & (1 << 4));
+    return MMIO::mmio_read(UART0_DR);
 }
 
 int Serial::get_command_line(char *buf, int maxlen) {
@@ -62,8 +51,8 @@ int Serial::get_command_line(char *buf, int maxlen) {
 
 
 void Serial::putchar(char c) {
-    while (Serial::mmio_read(UART0_FR) & (1 << 5));
-    Serial::mmio_write(UART0_DR, c);
+    while (MMIO::mmio_read(UART0_FR) & (1 << 5));
+    MMIO::mmio_write(UART0_DR, c);
 }
 
 void Serial::puts(const char* s) {
