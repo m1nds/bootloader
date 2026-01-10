@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-constexpr uint32_t PL011_BASE = 0x09000000;
-
 class MMIO {
     public:
         static void mmio_write(uint32_t reg, uint32_t data);

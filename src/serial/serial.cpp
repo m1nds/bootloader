@@ -5,14 +5,29 @@
 #include <stdarg.h>
 
 unsigned char Serial::stack[STACK_SIZE] = { 0 };
+bool Serial::_init = false;
+uint64_t Serial::PL011_BASE = 0;
 size_t Serial::stack_idx = 0;
 
+void Serial::init(uint64_t base) {
+    Serial::_init = true;
+    Serial::PL011_BASE = base;
+}
+
 char Serial::getchar() {
-    while (MMIO::mmio_read(PL011_BASE + UART0_FR) & (1 << 4));
-    return MMIO::mmio_read(PL011_BASE + UART0_DR);
+    if (!Serial::_init) {
+        return '\x00';
+    }
+
+    while (MMIO::mmio_read(Serial::PL011_BASE + UART0_FR) & (1 << 4));
+    return MMIO::mmio_read(Serial::PL011_BASE + UART0_DR);
 }
 
 int Serial::get_command_line(char *buf, int maxlen) {
+    if (!Serial::_init) {
+        return 0;
+    }
+
     int i = 0;
     while (true) {
 
@@ -51,11 +66,19 @@ int Serial::get_command_line(char *buf, int maxlen) {
 
 
 void Serial::putchar(char c) {
+    if (!Serial::_init) {
+        return;
+    }
+
     while (MMIO::mmio_read(UART0_FR) & (1 << 5));
     MMIO::mmio_write(PL011_BASE + UART0_DR, c);
 }
 
 void Serial::puts(const char* s) {
+    if (!Serial::_init) {
+        return;
+    }
+
     size_t i = 0;
     while (s[i]) {
         Serial::putchar(s[i++]);
@@ -64,6 +87,10 @@ void Serial::puts(const char* s) {
 
 void Serial::print_hex(uint64_t value, uint32_t bits)
 {
+    if (!Serial::_init) {
+        return;
+    }
+
     uint32_t digits = 0;
     char hex[] = "0123456789ABCDEF";
 
@@ -89,6 +116,10 @@ void Serial::print_hex(uint64_t value, uint32_t bits)
 
 void Serial::print_dec(uint32_t value)
 {
+    if (!Serial::_init) {
+        return;
+    }
+
     uint32_t digits = 0;
 
     if (value == 0) {
@@ -110,6 +141,10 @@ void Serial::print_dec(uint32_t value)
 }
 
 void Serial::kprintf(const char* fmt, ...) {
+    if (!Serial::_init) {
+        return;
+    }
+
     va_list args;
     va_start(args, fmt);
 

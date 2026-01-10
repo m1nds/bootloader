@@ -26,6 +26,20 @@ char *strcpy(char* dest, const char* src) {
     return dest;
 }
 
+int memcmp(const void* one, const void* two, size_t len) {
+    const uint8_t* c_one = reinterpret_cast<const uint8_t*>(one);
+    const uint8_t* c_two = reinterpret_cast<const uint8_t*>(two);
+
+
+    for (size_t i = 0; i < len; i++) {
+        if (c_one[i] != c_two[i]) {
+            return c_one[i] - c_two[i];
+        }
+    }
+
+    return 0;
+}
+
 int strcmp(const char* one, const char* two) {
     size_t i = 0;
 
@@ -35,7 +49,19 @@ int strcmp(const char* one, const char* two) {
         }
         i++;
     }
-    return one[i] - two[i];
+    return 0;
+}
+
+int strncmp(const char* one, const char* two, size_t len) {
+    size_t i = 0;
+
+    while (one[i] && two[i] && i < len) {
+        if (one[i] != two[i]) {
+            return one[i] - two[i];
+        }
+        i++;
+    }
+    return 0;
 }
 
 void* memmove(void* dstptr, const void* srcptr, size_t size) {

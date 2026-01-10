@@ -2,6 +2,9 @@
 #include <serial.hpp>
 #include <string.hpp>
 
+#include <stddef.h>
+#include <stdint.h>
+
 uint8_t* DTB::struct_block() {
     return (uint8_t*)this + __builtin_bswap32(hdr.off_dt_struct);
 }
@@ -37,6 +40,48 @@ void DTB::verify_header() {
 
     if (version > DTB_VERSION_MAX || version < DTB_VERSION_MIN || last_comp_version > version) {
         Serial::puts("  WARNING: DTB Version is invalid!\n");
+    }
+}
+
+void DTB::parse_nodes(size_t propCount, const char* props[], size_t propsLen[], uint64_t values[]) {
+    uint32_t* ptr = reinterpret_cast<uint32_t*>(this->struct_block());
+    uint8_t* strings = strings_block();
+
+    int takeProp = -1;
+    while (true) {
+        uint32_t tag = __builtin_bswap32(*(ptr++));
+        if (tag == FDT_BEGIN_NODE) {
+            const char* name = (char*)ptr;
+            size_t name_len = strlen(name);
+
+            for (size_t i = 0; i < propCount; i++) {
+                if (!strncmp(props[i], name, propsLen[i])) {
+                    takeProp = i;
+                }
+            }
+
+            size_t skip_len = (name_len) / 4 + (name_len % 4 != 0);
+            ptr += skip_len;
+
+        } else if (tag == FDT_PROP) {
+            uint32_t len = __builtin_bswap32(*(ptr++));
+            uint32_t nameoff = __builtin_bswap32(*(ptr++));
+            const char* prop_name = (char*)(strings + nameoff);
+
+            if (!strcmp(prop_name, "reg")) {
+                uint64_t offset = (((uint64_t) __builtin_bswap32(ptr[0])) << 32) | ((uint64_t) __builtin_bswap32(ptr[1]));
+
+                if (takeProp != -1) {
+                    values[takeProp] = offset;
+                    takeProp = -1;
+                }
+            }
+
+            ptr += (len / 4) + (len % 4 != 0);
+
+        } else if (tag == FDT_END) {
+            break;
+        }
     }
 }
 

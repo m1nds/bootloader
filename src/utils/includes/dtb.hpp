@@ -2,6 +2,7 @@
 #define DTB_HPP
 
 #include <stdint.h>
+#include <stddef.h>
 
 constexpr uint32_t DTB_VERSION_MIN = 1;
 constexpr uint32_t DTB_VERSION_MAX = 17;
@@ -30,6 +31,9 @@ class DTB {
         void dump_header();
         void verify_header();
         void dump_nodes();
+        void parse_nodes(size_t propCount, const char* props[], size_t propsLen[], uint64_t values[]);
+
+
     private:
         uint8_t* struct_block();
         uint8_t* strings_block();

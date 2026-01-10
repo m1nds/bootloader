@@ -10,6 +10,7 @@ constexpr uint32_t STACK_SIZE = 0x1000;
 
 class Serial {
     public:
+        static void init(uint64_t base);
         static char getchar(void);
         static int get_command_line(char *buf, int maxlen);
         static void putchar(char c);
@@ -19,6 +20,8 @@ class Serial {
         static void print_hex(uint64_t value, uint32_t bits);
 
     private:
+        static bool _init;
+        static uint64_t PL011_BASE;
         static void mmio_write(uint32_t reg, uint32_t data);
         static uint32_t mmio_read(uint32_t reg);
 

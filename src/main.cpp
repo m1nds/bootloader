@@ -4,6 +4,7 @@
 #include <dtb.hpp>
 
 #include <stddef.h>
+#include <stdint.h>
 
 extern uint64_t TEXT_START[];
 
@@ -20,6 +21,14 @@ void help() {
 
 extern "C" void kmain(void* device_tree) {
     DTB* dtb = reinterpret_cast<DTB*>(device_tree);
+
+    const char* nodes[] = {"pl011", "pcie"};
+    size_t nodesLen[] = {strlen("pl011"), strlen("pcie")};
+    uint64_t nodesValues[2] = {0, 0};
+
+    dtb->parse_nodes(2, nodes, nodesLen, nodesValues);
+
+    Serial::init(nodesValues[0]);
 
     void* kernel_image_addr = reinterpret_cast<void*>((uint64_t) &TEXT_START + PFLASH_BIN_OFFSET);
 
