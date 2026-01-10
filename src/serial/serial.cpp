@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 
-unsigned char Serial::stack[256] = { 0 };
+unsigned char Serial::stack[STACK_SIZE] = { 0 };
 size_t Serial::stack_idx = 0;
 
 char Serial::getchar() {

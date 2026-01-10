@@ -6,3 +6,4 @@ initramfs
 pflash.bin
 bootloader.img
 qemu.dtb
+qemu.dts

@@ -1,5 +1,14 @@
 #include <dtb.hpp>
 #include <serial.hpp>
+#include <string.hpp>
+
+uint8_t* DTB::struct_block() {
+    return (uint8_t*)this + __builtin_bswap32(hdr.off_dt_struct);
+}
+
+uint8_t* DTB::strings_block() {
+    return (uint8_t*)this + __builtin_bswap32(hdr.off_dt_strings);
+}
 
 void DTB::dump_header() {
     Serial::puts("=== Device Tree Blob ===\n");
@@ -28,5 +37,75 @@ void DTB::verify_header() {
 
     if (version > DTB_VERSION_MAX || version < DTB_VERSION_MIN || last_comp_version > version) {
         Serial::puts("  WARNING: DTB Version is invalid!\n");
+    }
+}
+
+void DTB::dump_nodes() {
+    uint32_t* ptr = reinterpret_cast<uint32_t*>(this->struct_block());
+    uint8_t* strings = strings_block();
+
+    int spaces = 0;
+
+    while (true) {
+        uint32_t tag = __builtin_bswap32(*(ptr++));
+        if (tag == FDT_BEGIN_NODE) {
+            const char* name = (char*)ptr;
+            size_t name_len = strlen(name);
+
+            for (int i = 0; i < spaces; i++) {
+                Serial::putchar(' ');
+            }
+
+            if (name_len > 0) {
+                Serial::kprintf("FDT_BEGIN_NODE: %s\n", name);
+            }
+
+            size_t skip_len = (name_len) / 4 + (name_len % 4 != 0);
+            ptr += skip_len;
+            spaces += 2;
+
+        } else if (tag == FDT_PROP) {
+            uint32_t len = __builtin_bswap32(*(ptr++));
+            uint32_t nameoff = __builtin_bswap32(*(ptr++));
+            const char* prop_name = (char*)(strings + nameoff);
+
+            for (int i = 0; i < spaces; i++) {
+                Serial::putchar(' ');
+            }
+
+            if (!strcmp(prop_name, "reg")) {
+                uint64_t offset = (((uint64_t) __builtin_bswap32(ptr[0])) << 32) | ((uint64_t) __builtin_bswap32(ptr[1]));
+                uint64_t size = (((uint64_t) __builtin_bswap32(ptr[2])) << 32) | ((uint64_t) __builtin_bswap32(ptr[3]));
+                (void) size;
+                Serial::kprintf("FDT_PROP: reg = %X [%X]\n", offset, size);
+            } else {
+                Serial::kprintf("FDT_PROP: %s\n", prop_name);
+            }
+
+            ptr += (len / 4) + (len % 4 != 0);
+
+        } else if (tag == FDT_NOP) {
+            for (int i = 0; i < spaces; i++) {
+                Serial::putchar(' ');
+            }
+
+            Serial::kprintf("FDT_NOP\n");
+        } else if (tag == FDT_END_NODE) {
+            spaces -= 2;
+
+            for (int i = 0; i < spaces; i++) {
+                Serial::putchar(' ');
+            }
+
+            Serial::kprintf("FDT_END_NODE\n");
+        } else if (tag == FDT_END) {
+
+            for (int i = 0; i < spaces; i++) {
+                Serial::putchar(' ');
+            }
+
+            Serial::kprintf("FDT_END\n");
+            break;
+        }
     }
 }

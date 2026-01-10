@@ -51,3 +51,11 @@ void* memmove(void* dstptr, const void* srcptr, size_t size) {
     return dstptr;
 }
 
+size_t strlen(const char *s) {
+    size_t len = 0;
+    while (s[len] != '\x00') {
+        len++;
+    }
+    return len;
+}
+

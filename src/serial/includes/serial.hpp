@@ -6,6 +6,7 @@
 
 constexpr uint32_t UART0_DR = 0x0;
 constexpr uint32_t UART0_FR = 0x18;
+constexpr uint32_t STACK_SIZE = 0x1000;
 
 class Serial {
     public:
@@ -21,7 +22,7 @@ class Serial {
         static void mmio_write(uint32_t reg, uint32_t data);
         static uint32_t mmio_read(uint32_t reg);
 
-        static unsigned char stack[256];
+        static unsigned char stack[STACK_SIZE];
         static size_t stack_idx;
 };
 

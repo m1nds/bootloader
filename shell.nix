@@ -3,6 +3,7 @@ with import <nixpkgs> {};
 pkgs.mkShell {
   name = "bootloader-shell";
   buildInputs = [
+    pkgs.dtc
     pkgs.ninja
     pkgs.cmake
     pkgs.qemu

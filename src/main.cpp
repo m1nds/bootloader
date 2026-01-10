@@ -13,13 +13,13 @@ static char command_buffer[256];
 
 void help() {
     Serial::puts("my_pikaboot - by m1nds\n");
-    Serial::puts("   - boot : boots the image using Linux Boot Protocol.\n");
-    Serial::puts("   - help : display all the commands available.\n");
+    Serial::puts("   - boot : Boots the image using Linux Boot Protocol.\n");
+    Serial::puts("   - dtb  : Dumps the Device Tree Blob.\n");
+    Serial::puts("   - help : Display all the commands available.\n");
 }
 
 extern "C" void kmain(void* device_tree) {
     DTB* dtb = reinterpret_cast<DTB*>(device_tree);
-    dtb->dump_header();
 
     void* kernel_image_addr = reinterpret_cast<void*>((uint64_t) &TEXT_START + PFLASH_BIN_OFFSET);
 
@@ -33,6 +33,9 @@ extern "C" void kmain(void* device_tree) {
         if (read > 0 && strcmp(command_buffer, "boot") == 0) {
             Kernel kernel = Kernel(kernel_image_addr, device_tree);
             kernel.boot();
+        } else if (read > 0 && strcmp(command_buffer, "dtb") == 0) {
+            dtb->dump_header();
+            dtb->dump_nodes();
         } else if (read > 0 && strcmp(command_buffer, "help") == 0) {
             help();
         } else {
