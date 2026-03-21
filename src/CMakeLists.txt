@@ -11,6 +11,7 @@ target_sources(bootloader PUBLIC
     main.cpp
     serial/serial.cpp
     boot/boot.cpp
+    pcie/pcie.cpp
     utils/string.cpp
     utils/crc.cpp
     utils/mmio.cpp
@@ -20,6 +21,7 @@ target_sources(bootloader PUBLIC
 target_include_directories(bootloader PRIVATE
     utils/includes
     serial/includes
+    pcie/includes
     boot/includes
 )
 

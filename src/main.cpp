@@ -1,4 +1,5 @@
 #include <serial.hpp>
+#include <pcie.hpp>
 #include <boot.hpp>
 #include <string.hpp>
 #include <dtb.hpp>
@@ -29,10 +30,12 @@ extern "C" void kmain(void* device_tree) {
     dtb->parse_nodes(2, nodes, nodesLen, nodesValues);
 
     Serial::init(nodesValues[0]);
+    PCIE::init(nodesValues[1]);
 
     void* kernel_image_addr = reinterpret_cast<void*>((uint64_t) &TEXT_START + PFLASH_BIN_OFFSET);
 
     Serial::puts("my_pikaboot - by m1nds\n\n");
+    PCIE::enumerate();
     Serial::puts("=== Starting the bootloader... ===\n");
 
     while (true) {
