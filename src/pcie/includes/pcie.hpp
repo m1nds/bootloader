@@ -3,10 +3,29 @@
 
 #include <cstdint>
 
-class PCIE {
+class pci_device {
+    public:
+        pci_device();
+        pci_device(uint16_t bus, uint8_t device, uint16_t function, uint8_t* cfg_space);
+        uint16_t vendor();
+        uint16_t device();
+        bool valid();
+
+    private:
+        uint16_t _bus;
+        uint8_t _device;
+        uint8_t _function;
+        uint8_t* _cfg_space;
+        uint16_t _vendor_id;
+        uint16_t _device_id;
+
+};
+
+class PCIe {
     public:
         static void init(uint64_t pci_base);
         static void enumerate();
+        static pci_device get(uint16_t target_vendor_id, uint16_t target_device_id);
 
     private:
         static bool _init;
