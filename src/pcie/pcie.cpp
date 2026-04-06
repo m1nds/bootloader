@@ -32,7 +32,7 @@ void PCIe::enumerate() {
             uint16_t vendor_id = id_reg & 0xFFFF;
             uint16_t device_id = (id_reg >> 16) & 0xFFFF;
 
-            if (vendor_id == 0xFFFF || device_id != 0xFFFF) {
+            if (vendor_id == 0xFFFF || device_id == 0xFFFF) {
                 continue;
             }
 
