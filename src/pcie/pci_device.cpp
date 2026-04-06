@@ -29,5 +29,5 @@ uint16_t pci_device::vendor() {
 }
 
 uint16_t pci_device::device() {
-    return this->_vendor_id;
+    return this->_device_id;
 }
