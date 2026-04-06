@@ -23,7 +23,7 @@ void PCIe::enumerate() {
 
     for (uint16_t bus = 0; bus <= 255; bus++) {
         for (uint8_t device = 0; device < 32; device++) {
-            for (uint8_t function = 0; function < 12; function++) {
+            for (uint8_t function = 0; function < 8; function++) {
 
             uint64_t off = offset(bus, device, function);
             uint8_t* cfg_space = reinterpret_cast<uint8_t*>(PCIe::_pci_base + off);
@@ -51,7 +51,7 @@ pci_device PCIe::get(uint16_t target_vendor_id, uint16_t target_device_id) {
 
     for (uint16_t bus = 0; bus <= 255; bus++) {
         for (uint8_t device = 0; device < 32; device++) {
-            for (uint8_t function = 0; function < 12; function++) {
+            for (uint8_t function = 0; function < 8; function++) {
 
                 uint64_t off = offset(bus, device, function);
                 uint8_t* cfg_space = reinterpret_cast<uint8_t*>(PCIe::_pci_base + off);
