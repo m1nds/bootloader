@@ -60,7 +60,7 @@ pci_device PCIe::get(uint16_t target_vendor_id, uint16_t target_device_id) {
                 uint16_t vendor_id = id_reg & 0xFFFF;
                 uint16_t device_id = (id_reg >> 16) & 0xFFFF;
 
-                if (vendor_id != target_vendor_id && device_id != target_device_id) {
+                if (vendor_id != target_vendor_id || device_id != target_device_id) {
                     continue;
                 }
 
