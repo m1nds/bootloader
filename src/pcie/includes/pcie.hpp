@@ -11,7 +11,14 @@ class pci_device {
         uint16_t device();
         bool valid();
 
-    private:
+        void* get_bar_addr(uint8_t bar);
+        bool set_bar_addr(uint8_t bar, uint64_t addr);
+        bool has_caps();
+        uint8_t cap_ptr();
+        uint8_t* get_cap(uint8_t cap_id);
+        uint32_t* cmd_reg();
+
+    protected:
         uint16_t _bus;
         uint8_t _device;
         uint8_t _function;
