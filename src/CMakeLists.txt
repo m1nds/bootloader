@@ -12,6 +12,7 @@ target_sources(bootloader PUBLIC
     serial/serial.cpp
     boot/boot.cpp
     pcie/pcie.cpp
+    pcie/virtio.cpp
     pcie/pci_device.cpp
     utils/string.cpp
     utils/crc.cpp
