@@ -1,5 +1,7 @@
 #include <serial.hpp>
 #include <pcie.hpp>
+#include <mmio.hpp>
+#include <virtio.hpp>
 #include <boot.hpp>
 #include <string.hpp>
 #include <dtb.hpp>
@@ -37,6 +39,8 @@ extern "C" void kmain(void* device_tree) {
     Serial::puts("my_pikaboot - by m1nds\n\n");
     PCIe::enumerate();
     Serial::puts("=== Starting the bootloader... ===\n");
+
+    virtio_net::init_virtio_net();
 
     while (true) {
         Serial::puts("my_pikaboot> ");

@@ -26,7 +26,12 @@ constexpr int VIRTIO_PCI_CAP_PCI_CFG = 5;
 constexpr int VIRTIO_CONFIG_S_ACKNOWLEDGE = 1;
 constexpr int VIRTIO_CONFIG_S_DRIVER = 2;
 constexpr int VIRTIO_CONFIG_S_DRIVER_OK = 4;
-constexpr int VIRTIO_CONFIG_S_FEATURES_OK = 4;
+constexpr int VIRTIO_CONFIG_S_FEATURES_OK = 8;
+
+constexpr int VIRTIO_NET_F_CSUM = 1 << 0;
+constexpr int VIRTIO_NET_F_GUEST_CSUM = 1 << 1;
+constexpr int VIRTIO_NET_F_MAC = 1 << 5;
+constexpr int VIRTIO_F_VERSION_1 = 1 << 31;
 
 struct virtio_pci_cap {
     u8 cap_vndr; /* Generic PCI field: PCI_CAP_ID_VNDR */
@@ -68,7 +73,35 @@ struct virtio_pci_notify_cap {
 class virtio_net : public pci_device {
     public:
         using pci_device::pci_device;
+
+        uint8_t* get_virtio_cap(uint8_t cfg_type);
         struct virtio_pci_common_cfg* config(int virtio_config);
+        void setup_virtq();
+
+        static void init_virtio_net();
+
+    private:
+        static uint16_t* rx_reg;
+        static uint16_t* tx_reg;
+        static struct virtq rx __attribute__((aligned(4096)));;
+        static struct virtq tx __attribute__((aligned(4096)));;
+};
+
+constexpr int VIRTIO_NET_HDR_F_NEEDS_CSUM = 1;
+constexpr int VIRTIO_NET_HDR_GSO_NONE = 0;
+constexpr int VIRTIO_NET_HDR_GSO_TCPV4 = 1;
+constexpr int VIRTIO_NET_HDR_GSO_UDP = 3;
+constexpr int VIRTIO_NET_HDR_GSO_TCPV6 = 4;
+constexpr int VIRTIO_NET_HDR_GSO_ECN = 0x80;
+
+struct virtio_net_hdr {
+    u8 flags;
+    u8 gso_type;
+    le16 hdr_len;
+    le16 gso_size;
+    le16 csum_start;
+    le16 csum_offset;
+    le16 num_buffers;
 };
 
 #endif /* VIRTIO_HPP */
