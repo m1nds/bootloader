@@ -36,7 +36,7 @@ void PCIe::enumerate() {
                 continue;
             }
 
-            Serial::kprintf("[PCIe] %d:%d.%d | Vendor ID: 0x%x | Device ID: 0x%x\n",
+            Serial::kprintf("[PCIe] %d:%d.%d | Vendor ID: %x | Device ID: %x\n",
                          bus, device, function, vendor_id, device_id);
             }
         }
